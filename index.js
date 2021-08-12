@@ -24,7 +24,7 @@ const addNewCard = () => {
             <img src=${taskData.image}
                 alt="image" class="card-img">
             <h5 class="card-title mt-4">
-            ${taskData,title}</h5>
+            ${taskData.title}</h5>
             <p class="card-text">
             ${taskData.description}</p>
             <span class="badge bg-primary">${taskData.type}</span>
