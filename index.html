@@ -13,7 +13,7 @@
     <title>Task Management</title>
 </head>
 
-<body style="background-color:#ebf3ff;">
+<body style="background-color:#ebf3ff;" onload="loadExistingCadrs()" >
     <div class="modal fade" id="newTask" tabindex="-1" aria-labelledby="newTaskLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -41,7 +41,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick ="addNewCard()" >Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick ="addNewCard()"  data-bs-dismiss="modal">Save changes</button>
                 </div>
             </div>
         </div>
