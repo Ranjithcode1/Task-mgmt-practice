@@ -1,4 +1,5 @@
 const taskContainer = document.querySelector(".task__container");
+const taskmodal = document.querySelector(".task__modal__body");
 
 let globalTaskData = [];
 
@@ -21,10 +22,20 @@ const generateHTML = (taskData) => {
         <span class="badge bg-primary">${taskData.type}</span>
     </div>
     <div class="card-footer text-muted">
-        <button class="btn btn-outline-primary" name=${taskData.id} >Open Task</button>
+        <button class="btn btn-outline-primary" name=${taskData.id} data-bs-toggle="modal" data-bs-target="#showTask" onclick="openTask.apply(this, arguments)" >Open Task</button>
     </div>
 </div>
 </div> `;
+};
+
+const openTaskModal = (taskData) => {
+    const date = new Date(parseInt(taskData.id));
+    return `<div id=${taskData.id} >
+    <img src=${taskData.image} alt="image" class="img-fluid placeholder__image mb-3">
+    <strong class=" text-sm text-muted ">Created on ${date.toDateString()}</strong>
+    <h2 class="my-3">${taskData.title}</h2>
+    <p class="lead">${taskData.description}</p>
+</div>`;
 };
 
 const insertToDOM = (content) =>
@@ -40,8 +51,8 @@ const addNewCard = () => {
         id: `${Date.now()}`,
         title: document.getElementById("taskTitle").value,
         image: document.getElementById("ImageUrl").value,
-        type: document.getElementById("taskType").value,
         description: document.getElementById("taskDescription").value,
+        type: document.getElementById("taskType").value,
 
     };
 
@@ -55,8 +66,8 @@ const addNewCard = () => {
 
     document.getElementById("taskTitle").value = "";
     document.getElementById("ImageUrl").value = "";
-    document.getElementById("taskType").value = "";
     document.getElementById("taskDescription").value = "";
+    document.getElementById("taskType").value = "";
 
     return;
 };
@@ -126,8 +137,8 @@ const editCard = (event) => {
     }
 
     taskTitle = parentElement.childNodes[3].childNodes[3];
-    taskType = parentElement.childNodes[3].childNodes[5];
-    taskDescription = parentElement.childNodes[3].childNodes[7];
+    taskType = parentElement.childNodes[3].childNodes[7];
+    taskDescription = parentElement.childNodes[3].childNodes[5];
     submitButton = parentElement.childNodes[5].childNodes[1];
 
     taskTitle.setAttribute("contenteditable", "true");
@@ -153,8 +164,8 @@ const saveEdit = (event) => {
     }
 
     const taskTitle = parentElement.childNodes[3].childNodes[3];
-    const taskType = parentElement.childNodes[3].childNodes[5];
-    const taskDescription = parentElement.childNodes[3].childNodes[7];
+    const taskType = parentElement.childNodes[3].childNodes[7];
+    const taskDescription = parentElement.childNodes[3].childNodes[5];
     const submitButton = parentElement.childNodes[5].childNodes[1];
 
     const updateData = {
@@ -179,8 +190,20 @@ const saveEdit = (event) => {
     taskTitle.setAttribute("contenteditable", "false");
     taskType.setAttribute("contenteditable", "false");
     taskDescription.setAttribute("contenteditable", "false");
+    submitButton.setAttribute("onclick", "openTask.apply(this, arguments)" );
+    submitButton.setAttribute("data-bs-toggle", "modal");
+    submitButton.setAttribute("data-bs-target", "#showTask" );
     submitButton.innerHTML = "Open task";
 
 };
+
+const openTask = (event) => {
+    const targetID = event.target.getAttribute("name");
+
+    const getTask = globalTaskData.filter((task) => task.id === targetID);
+    taskmodal.innerHTML = openTaskModal(getTask[0]);
+
+};
+
 
 
