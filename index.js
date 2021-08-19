@@ -1,9 +1,10 @@
 const taskContainer = document.querySelector(".task__container");
 const taskmodal = document.querySelector(".task__modal__body");
+const searchBar = document.getElementById("searchBar");
 
 let globalTaskData = [];
 
-const generateHTML = (taskData) => { 
+const generateHTML = (taskData) => {
     return `<div id=${taskData.id} class="col-md-6 col-lg-4 my-4">
 <div class="card ">
     <div class="card-header d-flex justify-content-end gap-2">
@@ -154,11 +155,11 @@ const saveEdit = (event) => {
     const targetID = event.target.getAttribute("name");
     const elementType = event.target.tagName;
 
-    let parentElement; 
+    let parentElement;
 
     if (elementType === "BUTTON") {
         parentElement = event.target.parentNode.parentNode;
-    }else {
+    } else {
         parentElement = event.target.parentNode.parentNode.parentNode;
 
     }
@@ -174,25 +175,28 @@ const saveEdit = (event) => {
         description: taskDescription.innerHTML,
     };
 
-     const updateGobalTask = globalTaskData.map((task) => {
+    const updateGobalTask = globalTaskData.map((task) => {
 
         if (task.id === targetID) {
-            return { ...task , ...updateData };
+            return {
+                ...task,
+                ...updateData
+            };
         }
         return task;
     });
 
     globalTaskData = updateGobalTask;
-    
+
     saveToLocalStorage();
 
 
     taskTitle.setAttribute("contenteditable", "false");
     taskType.setAttribute("contenteditable", "false");
     taskDescription.setAttribute("contenteditable", "false");
-    submitButton.setAttribute("onclick", "openTask.apply(this, arguments)" );
+    submitButton.setAttribute("onclick", "openTask.apply(this, arguments)");
     submitButton.setAttribute("data-bs-toggle", "modal");
-    submitButton.setAttribute("data-bs-target", "#showTask" );
+    submitButton.setAttribute("data-bs-target", "#showTask");
     submitButton.innerHTML = "Open task";
 
 };
@@ -205,5 +209,25 @@ const openTask = (event) => {
 
 };
 
+searchBar.addEventListener("keyup", function (e) {
+    if (!e) e = window.event;
+    while (taskContainer.firstChild) {
+        taskContainer.removeChild(taskContainer.firstChild);
+    }
+    const searchString = e.target.value;
 
+    const filteredCharacters = globalTaskData.filter((character) => {
+        return (
+            character.title.toLowerCase().includes(searchString) ||
+            character.description.toLowerCase().includes(searchString) ||
+            character.type.toLowerCase().includes(searchString)
+        );
+    });
 
+     filteredCharacters.map((careData) => {
+
+        const filteredCard = generateHTML(careData);
+
+        insertToDOM(filteredCard);
+    });
+});
