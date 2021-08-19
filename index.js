@@ -194,11 +194,10 @@ const saveEdit = (event) => {
     taskTitle.setAttribute("contenteditable", "false");
     taskType.setAttribute("contenteditable", "false");
     taskDescription.setAttribute("contenteditable", "false");
+    submitButton.innerHTML = "Open task";
     submitButton.setAttribute("onclick", "openTask.apply(this, arguments)");
     submitButton.setAttribute("data-bs-toggle", "modal");
     submitButton.setAttribute("data-bs-target", "#showTask");
-    submitButton.innerHTML = "Open task";
-
 };
 
 const openTask = (event) => {
@@ -218,9 +217,9 @@ searchBar.addEventListener("keyup", function (e) {
 
     const filteredCharacters = globalTaskData.filter((character) => {
         return (
-            character.title.toLowerCase().includes(searchString) ||
-            character.description.toLowerCase().includes(searchString) ||
-            character.type.toLowerCase().includes(searchString)
+            character.title.includes(searchString) ||
+            character.description.includes(searchString) ||
+            character.type.includes(searchString)
         );
     });
 
